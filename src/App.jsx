@@ -1,20 +1,36 @@
-import { Route, Switch, useHistory } from "react-router-dom";
+import { createContext, useContext, useReducer } from "react";
+import { Redirect, Route, Switch, useHistory } from "react-router-dom";
 import Login from "./Login.jsx";
 import Main from "./Main.jsx";
+export const contextValue=createContext()
+const auth =false
+
+const authorReducer=(state=auth,action)=>{
+  switch(action.type){
+    case "SET_AUTH":{
+      console.log("sadf",state)
+      return !state
+    }
+    default :
+    return state
+  }
+}
+
 function App() {
-  const history = useHistory();
+
+  const [state,dispatch]=useReducer(authorReducer,auth)
+ 
   return (
+  
+  <contextValue.Provider value={{state,dispatch}}>
     <Switch>
       <Route path="/login" render={() => <Login />} />
 
       <Route
         path="/main"
         render={() => {
-          const checkLogin = localStorage.getItem("admin99");
-          console.log("main",checkLogin)
-          if (!checkLogin) {
-            history.push("/login");
-            return;
+          if(!state){
+            return <Redirect to="/login"/>
           }
           return <Main />;
         }}
@@ -22,15 +38,14 @@ function App() {
       <Route
         path="/*"
         render={() => {
-          const checkLogin = localStorage.getItem("login");
-          if (!checkLogin) {
-            history.push("/login");
-            return;
+         
+          if(!state){
+            return <Redirect to="/login"/>
           }
           return <Main />;
         }}
       />
-    </Switch>
+    </Switch></contextValue.Provider>
   );
 }
 

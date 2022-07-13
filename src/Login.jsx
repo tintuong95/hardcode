@@ -1,18 +1,20 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useHistory } from "react-router-dom";
+import { contextValue } from "./App.jsx";
 
 function Login() {
   const history  =useHistory()
+  const context = useContext(contextValue);
   const [state, setstate] = useState({
     username: null,
     password: null,
   });
   const [error, setError] = useState(null);
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     if (state.username === "admin99" && state.password === "admin99") {
-      localStorage.setItem("admin99",true)
-      setError(true);
-      history.push("/")
+      context.dispatch({type:"SET_AUTH"})
+      await setError(true);
+      await history.push("/")
     } else {
       setError(false);
     }
