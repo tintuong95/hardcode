@@ -1,7 +1,7 @@
 
 
 import { useState } from "react";
-import "./app.css";
+
 
 function App() {
   const [state, setstate] = useState({
@@ -9,7 +9,7 @@ function App() {
     password: null,
   });
   const handleSubmit = (e) => {
-    if(state.username=="admin99" && state.password=="admin99"){
+    if(state.username==="admin99" && state.password==="admin99"){
       console.log("pass",process.env.REACT_APP_USERNAME)
     }
     
